@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zayd &amp; Elina — Royal Wedding Invitation</title>
+
+  <!-- Google Fonts: Cinzel Decorative, Cormorant Garamond & Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS (MIDNIGHT EMERALD & ANTIQUE GOLD PALETTE)
+       ========================================================================== */
+    :root {
+      --emerald-deep: #0B201A;
+      --emerald-mid: #133229;
+      --emerald-glass: rgba(19, 50, 41, 0.72);
+      --cream-silk: #F7F3EB;
+      --cream-warm: #EFE8DA;
+      --gold: #D4AF37;
+      --gold-soft: #E8CF7D;
+      --gold-muted: #9E7E24;
+      --text-dark: #1E2421;
+      --text-muted: #5A635E;
+      --text-light: #F7F3EB;
+
+      --font-display: 'Cinzel', Georgia, serif;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', -apple-system, sans-serif;
+
+      --transition-luxury: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ==========================================================================
+       2. RESET & BASE
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--cream-silk);
+      color: var(--text-dark);
+      font-family: var(--font-sans);
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    body.locked {
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* Top Reading Progress Line */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold-muted), var(--gold-soft));
+      z-index: 950;
+      transition: width 0.1s linear;
+    }
+
+    /* Floating Golden Stardust Canvas */
+    #stardust-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 880;
+    }
+
+    /* ==========================================================================
+       3. ROYAL SPLIT-DOOR WAX-SEAL CURTAIN OVERLAY
+       ========================================================================== */
+    #curtain-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+    }
+
+    #curtain-overlay.is-hidden {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .curtain-panel {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: radial-gradient(circle at center, #14362C 0%, #091A15 100%);
+      transition: transform 1.35s cubic-bezier(0.77, 0, 0.175, 1);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .curtain-left {
+      left: 0;
+      border-right: 1px solid rgba(212, 175, 55, 0.45);
+      justify-content: flex-end;
+    }
+
+    .curtain-right {
+      right: 0;
+      border-left: 1px solid rgba(212, 175, 55, 0.45);
+      justify-content: flex-start;
+    }
+
+    /* Ornamental Gold Frame Inside Doors */
+    .curtain-panel::before {
+      content: "";
+      position: absolute;
+      top: 24px;
+      bottom: 24px;
+      width: calc(100% - 24px);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      pointer-events: none;
+    }
+
+    .curtain-left::before { left: 24px; border-right: none; }
+    .curtain-right::before { right: 24px; border-left: none; }
+
+    /* Open Door Transform */
+    #curtain-overlay.open .curtain-left {
+      transform: translateX(-100%);
+    }
+
+    #curtain-overlay.open .curtain-right {
+      transform: translateX(100%);
+    }
+
+    /* Center Gold Wax Seal Crest */
+    .crest-trigger {
+      position: relative;
+      z-index: 10;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      transition: transform 0.6s ease, opacity 0.5s ease;
+    }
+
+    .crest-trigger:hover .crest-medallion {
+      transform: scale(1.06);
+      box-shadow: 0 0 45px rgba(212, 175, 55, 0.55);
+    }
+
+    .crest-medallion {
+      width: 124px;
+      height: 124px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #F1D98A 0%, #C59B27 65%, #7E5E10 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.65), inset 0 0 12px rgba(255, 255, 255, 0.5);
+      position: relative;
+      transition: var(--transition-luxury);
+    }
+
+    .crest-medallion::after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border-radius: 50%;
+      border: 1.5px dashed rgba(11, 32, 26, 0.55);
+    }
+
+    .crest-initials {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--emerald-deep);
+      letter-spacing: 0.08em;
+    }
+
+    .crest-label {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      background: rgba(11, 32, 26, 0.85);
+      padding: 0.45rem 1.1rem;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 50px;
+    }
+
+    #curtain-overlay.open .crest-trigger {
+      transform: scale(1.25);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Floating Replay Button */
+    .replay-crest-btn {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 900;
+      background: var(--emerald-deep);
+      color: var(--gold-soft);
+      border: 1px solid var(--gold);
+      padding: 0.55rem 1rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      transition: var(--transition-luxury);
+    }
+
+    .replay-crest-btn:hover {
+      background: var(--gold);
+      color: var(--emerald-deep);
+    }
+
+    /* ==========================================================================
+       4. NAVIGATION
+       ========================================================================== */
+    .header-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 850;
+      padding: 1.25rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-light);
+      transition: background 0.4s ease, padding 0.4s ease;
+    }
+
+    .header-nav.solid {
+      background: rgba(11, 32, 26, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 0.9rem 2.5rem;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .brand-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: 0.18em;
+      color: var(--gold-soft);
+      text-decoration: none;
+    }
+
+    .menu-list {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+    }
+
+    .menu-list a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+
+    .menu-list a:hover {
+      color: var(--gold-soft);
+    }
+
+    @media (max-width: 768px) {
+      .menu-list { display: none; }
+      .header-nav { justify-content: center; }
+    }
+
+    /* ==========================================================================
+       5. HERO SECTION (ARCHED EDITORIAL PORTRAIT + DARK EMERALD)
+       ========================================================================== */
+    .hero-royal {
+      min-height: 100vh;
+      background: radial-gradient(circle at 70% 30%, #173C31 0%, #091A15 100%);
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-container {
+      max-width: 1160px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-text {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+    }
+
+    .hero-text.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .bismillah-tag {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--gold-soft);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .hero-names {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: 0.06em;
+      color: #FFF;
+    }
+
+    .hero-names .and-word {
+      display: block;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.55em;
+      color: var(--gold);
+      margin: 0.15rem 0;
+    }
+
+    .hero-divider {
+      width: 90px;
+      height: 1px;
+      background: var(--gold);
+      margin: 1.75rem 0;
+    }
+
+    .hero-details {
+      font-size: 0.85rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(247, 243, 235, 0.85);
+    }
+
+    .hero-arch-wrapper {
+      position: relative;
+      max-width: 400px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 1.1s ease 0.4s, transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
+    }
+
+    .hero-arch-wrapper.revealed {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .hero-arch {
+      border-radius: 220px 220px 12px 12px;
+      overflow: hidden;
+      border: 1px solid var(--gold);
+      padding: 10px;
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .hero-arch img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 210px 210px 6px 6px;
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2.5rem;
+      }
+      .hero-divider {
+        margin: 1.5rem auto;
+      }
+      .hero-arch-wrapper {
+        max-width: 310px;
+      }
+    }
+
+    /* ==========================================================================
+       6. FLOATING GLASSMORPHISM COUNTDOWN BAR
+       ========================================================================== */
+    .countdown-banner {
+      background: var(--emerald-deep);
+      border-top: 1px solid rgba(212, 175, 55, 0.3);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 3.5rem 1.5rem;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    .countdown-boxes {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .time-box {
+      min-width: 115px;
+      padding: 1.35rem 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 4px;
+    }
+
+    .time-val {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      color: var(--gold-soft);
+      display: block;
+      line-height: 1.1;
+    }
+
+    .time-unit {
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(247, 243, 235, 0.7);
+      margin-top: 0.4rem;
+      display: block;
+    }
+
+    /* ==========================================================================
+       7. SHARED EDITORIAL SECTION HEADERS
+       ========================================================================== */
+    .section-block {
+      padding: 6.5rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .title-wrap {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold-muted);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .heading-display {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.9rem);
+      font-weight: 500;
+      color: var(--emerald-deep);
+      letter-spacing: 0.05em;
+    }
+
+    /* Scroll Fade Animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       8. COUPLE & LOVE STORY TIMELINE
+       ========================================================================== */
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.5rem;
+    }
+
+    .story-card {
+      background: #FFF;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 2.5rem;
+      border-radius: 4px;
+      position: relative;
+      box-shadow: 0 12px 35px rgba(11, 32, 26, 0.05);
+    }
+
+    .story-year {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      color: var(--gold-muted);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .story-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.85rem;
+      color: var(--emerald-deep);
+      margin-bottom: 0.75rem;
+    }
+
+    .story-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 768px) {
+      .story-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ==========================================================================
+       9. ROYAL ITINERARY & DRESS CODE PALETTE
+       ========================================================================== */
+    .itinerary-bg {
+      background: var(--cream-warm);
+    }
+
+    .event-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .royal-card {
+      background: var(--emerald-deep);
+      color: var(--text-light);
+      padding: 2.75rem 2rem;
+      border-radius: 4px;
+      border: 1px solid var(--gold);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition-luxury);
+    }
+
+    .royal-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 45px rgba(11, 32, 26, 0.22);
+    }
+
+    .royal-card .tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+    }
+
+    .royal-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      margin: 0.75rem 0 1rem;
+      color: #FFF;
+    }
+
+    .royal-card p {
+      font-size: 0.88rem;
+      color: rgba(247, 243, 235, 0.82);
+      margin-bottom: 1.5rem;
+    }
+
+    .map-link {
+      display: inline-block;
+      padding: 0.7rem 1.4rem;
+      border: 1px solid var(--gold-soft);
+      color: var(--gold-soft);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .map-link:hover {
+      background: var(--gold-soft);
+      color: var(--emerald-deep);
+    }
+
+    /* Dress Code Swatches */
+    .dress-code-box {
+      margin-top: 3.5rem;
+      text-align: center;
+      padding: 2rem;
+      background: #FFF;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 4px;
+    }
+
+    .swatches {
+      display: flex;
+      justify-content: center;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .swatch {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 2px solid #FFF;
+      box-shadow: 0 0 0 1px var(--gold);
+    }
+
+    @media (max-width: 900px) {
+      .event-row { grid-template-columns: 1fr; }
+    }
+
+    /* ==========================================================================
+       10. EDITORIAL GALLERY
+       ========================================================================== */
+    .editorial-gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .photo-tile {
+      overflow: hidden;
+      border-radius: 4px;
+      aspect-ratio: 3 / 4;
+      cursor: pointer;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .photo-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+
+    .photo-tile:hover img {
+      transform: scale(1.08);
+    }
+
+    @media (max-width: 768px) {
+      .editorial-gallery { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Lightbox */
+    .modal-view {
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 26, 21, 0.95);
+      z-index: 9500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease;
+    }
+
+    .modal-view.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-view img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border: 2px solid var(--gold);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      background: none;
+      border: none;
+      color: var(--gold-soft);
+      font-size: 2.2rem;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       11. RSVP SECTION
+       ========================================================================== */
+    .rsvp-wrap {
+      background: var(--emerald-deep);
+      color: var(--text-light);
+    }
+
+    .rsvp-wrap .heading-display {
+      color: #FFF;
+    }
+
+    .rsvp-box {
+      max-width: 580px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      padding: 2.75rem 2.25rem;
+      border-radius: 4px;
+    }
+
+    .field {
+      margin-bottom: 1.35rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      margin-bottom: 0.45rem;
+    }
+
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: rgba(9, 26, 21, 0.75);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: #FFF;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      border-radius: 3px;
+    }
+
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--gold-soft);
+    }
+
+    .submit-gold {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-muted) 100%);
+      color: var(--emerald-deep);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .submit-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.35);
+    }
+
+    .toast-msg {
+      position: fixed;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--gold);
+      color: var(--emerald-deep);
+      font-weight: 600;
+      padding: 0.9rem 1.75rem;
+      border-radius: 4px;
+      font-size: 0.86rem;
+      z-index: 9900;
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .toast-msg.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ==========================================================================
+       12. FOOTER
+       ========================================================================== */
+    footer {
+      background: #071410;
+      color: var(--gold-soft);
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    footer h4 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.14em;
+      margin-bottom: 0.4rem;
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(247, 243, 235, 0.6);
+    }
+  </style>
+</head>
+<body class="locked">
+
+  <!-- Top Scroll Progress Line -->
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <!-- Floating Golden Stardust Canvas -->
+  <canvas id="stardust-canvas"></canvas>
+
+  <!-- ========================================================================
+       ROYAL SPLIT-DOOR WAX-SEAL CURTAIN OVERLAY
+       ======================================================================== -->
+  <div id="curtain-overlay" role="dialog" aria-label="Royal Wedding Curtain">
+    <div class="curtain-panel curtain-left"></div>
+    <div class="curtain-panel curtain-right"></div>
+
+    <button class="crest-trigger" id="open-curtain-btn" aria-label="Open Royal Invitation">
+      <div class="crest-medallion">
+        <!-- Customize Monogram Initials Here -->
+        <span class="crest-initials">Z &amp; E</span>
+      </div>
+      <span class="crest-label">Break Seal to Enter</span>
+    </button>
+  </div>
+
+  <!-- Replay Curtain Button -->
+  <button class="replay-crest-btn" id="replay-curtain-btn">Replay Seal</button>
+
+  <!-- Navigation -->
+  <nav class="header-nav" id="header-nav">
+    <a href="#top" class="brand-logo">Z &amp; E</a>
+    <ul class="menu-list">
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#itinerary">Itinerary</a></li>
+      <li><a href="#moments">Gallery</a></li>
+      <li><a href="#rsvp">RSVP</a></li>
+    </ul>
+  </nav>
+
+  <!-- ========================================================================
+       HERO SECTION
+       ======================================================================== -->
+  <header class="hero-royal" id="top">
+    <div class="hero-container">
+      <div class="hero-text" id="hero-text">
+        <span class="bismillah-tag">In the name of love &amp; eternal grace</span>
+        <!-- Customize Couple Names Here -->
+        <h1 class="hero-names">
+          Zayd
+          <span class="and-word">&amp;</span>
+          Elina
+        </h1>
+        <div class="hero-divider"></div>
+        <!-- Customize Date & Venue Here -->
+        <p class="hero-details">January 22, 2027 &bull; Le M&eacute;ridien Grand Hall, Dhaka</p>
+      </div>
+
+      <div class="hero-arch-wrapper" id="hero-arch">
+        <div class="hero-arch">
+          <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=900&q=85" alt="Bride and Groom Editorial Portrait" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       COUNTDOWN BANNER
+       ======================================================================== -->
+  <section class="countdown-banner">
+    <span class="eyebrow" style="color: var(--gold-soft);">The Royal Countdown</span>
+    <div class="countdown-boxes">
+      <div class="time-box">
+        <span class="time-val" id="d-val">00</span>
+        <span class="time-unit">Days</span>
+      </div>
+      <div class="time-box">
+        <span class="time-val" id="h-val">00</span>
+        <span class="time-unit">Hours</span>
+      </div>
+      <div class="time-box">
+        <span class="time-val" id="m-val">00</span>
+        <span class="time-unit">Minutes</span>
+      </div>
+      <div class="time-box">
+        <span class="time-val" id="s-val">00</span>
+        <span class="time-unit">Seconds</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       OUR STORY TIMELINE
+       ======================================================================== -->
+  <section class="section-block" id="story">
+    <div class="container">
+      <div class="title-wrap fade-up">
+        <span class="eyebrow">Written in the Stars</span>
+        <h2 class="heading-display">Our Journey Together</h2>
+      </div>
+
+      <div class="story-grid">
+        <div class="story-card fade-up">
+          <span class="story-year">AUTUMN 2023</span>
+          <h3>A Serendipitous Encounter</h3>
+          <p>
+            Over an evening art exhibition and quiet conversation, two worlds crossed paths—sparking a friendship built on shared dreams and effortless laughter.
+          </p>
+        </div>
+
+        <div class="story-card fade-up">
+          <span class="story-year">WINTER 2025</span>
+          <h3>The Promise Forever</h3>
+          <p>
+            Underneath a canopy of winter stars, a simple question turned into a lifelong vow. Now, surrounded by those we cherish most, we begin our next chapter.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       ROYAL ITINERARY & DRESS CODE
+       ======================================================================== -->
+  <section class="section-block itinerary-bg" id="itinerary">
+    <div class="container">
+      <div class="title-wrap fade-up">
+        <span class="eyebrow">Save The Dates</span>
+        <h2 class="heading-display">Ceremony &amp; Festivities</h2>
+      </div>
+
+      <div class="event-row">
+        <article class="royal-card fade-up">
+          <div>
+            <span class="tag">Evening One</span>
+            <h3>Qawwali &amp; Mehendi</h3>
+            <p>
+              <strong>Wednesday, Jan 20, 2027 &bull; 7:00 PM</strong><br />
+              The Rooftop Conservatory, Gulshan 2
+            </p>
+          </div>
+          <a href="https://maps.google.com/?q=Gulshan+2+Dhaka" target="_blank" rel="noopener" class="map-link">Location Map</a>
+        </article>
+
+        <article class="royal-card fade-up">
+          <div>
+            <span class="tag">The Union</span>
+            <h3>Royal Nikah</h3>
+            <p>
+              <strong>Friday, Jan 22, 2027 &bull; 4:30 PM</strong><br />
+              Grand Crystal Ballroom, Le M&eacute;ridien
+            </p>
+          </div>
+          <a href="https://maps.google.com/?q=Le+Meridien+Dhaka" target="_blank" rel="noopener" class="map-link">Location Map</a>
+        </article>
+
+        <article class="royal-card fade-up">
+          <div>
+            <span class="tag">Grand Finale</span>
+            <h3>Walima Banquet</h3>
+            <p>
+              <strong>Saturday, Jan 23, 2027 &bull; 7:30 PM</strong><br />
+              Imperial Convention Hall, Dhaka
+            </p>
+          </div>
+          <a href="https://maps.google.com/?q=Dhaka" target="_blank" rel="noopener" class="map-link">Location Map</a>
+        </article>
+      </div>
+
+      <!-- Dress Code Palette -->
+      <div class="dress-code-box fade-up">
+        <span class="eyebrow">Guest Attire Inspiration</span>
+        <h3 style="font-family: var(--font-serif); font-size: 1.65rem; color: var(--emerald-deep);">
+          Formal Traditional &amp; Evening Elegance
+        </h3>
+        <p style="font-size: 0.86rem; color: var(--text-muted); margin-top: 0.3rem;">
+          We kindly invite you to complement our palette of Emerald, Champagne Gold, Ivory &amp; Charcoal
+        </p>
+        <div class="swatches">
+          <span class="swatch" style="background: #0B201A;" title="Midnight Emerald"></span>
+          <span class="swatch" style="background: #D4AF37;" title="Antique Gold"></span>
+          <span class="swatch" style="background: #F7F3EB;" title="Silk Ivory"></span>
+          <span class="swatch" style="background: #2C3330;" title="Deep Charcoal"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       EDITORIAL PHOTO GALLERY
+       ======================================================================== -->
+  <section class="section-block" id="moments">
+    <div class="container">
+      <div class="title-wrap fade-up">
+        <span class="eyebrow">Timeless Frames</span>
+        <h2 class="heading-display">Gallery</h2>
+      </div>
+
+      <div class="editorial-gallery fade-up">
+        <div class="photo-tile" data-src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1400&q=85">
+          <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&q=80" alt="Wedding Decor" loading="lazy" />
+        </div>
+        <div class="photo-tile" data-src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1400&q=85">
+          <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80" alt="Couple Embrace" loading="lazy" />
+        </div>
+        <div class="photo-tile" data-src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1400&q=85">
+          <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=600&q=80" alt="Wedding Rings" loading="lazy" />
+        </div>
+        <div class="photo-tile" data-src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1400&q=85">
+          <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=600&q=80" alt="Evening Celebration" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox Modal -->
+  <div class="modal-view" id="modal-view">
+    <button class="close-modal" id="close-modal">&times;</button>
+    <img src="" alt="Preview" id="modal-img" />
+  </div>
+
+  <!-- ========================================================================
+       RSVP SECTION
+       ======================================================================== -->
+  <section class="section-block rsvp-wrap" id="rsvp">
+    <div class="container">
+      <div class="title-wrap fade-up">
+        <span class="eyebrow" style="color: var(--gold-soft);">The Honor of Your Presence</span>
+        <h2 class="heading-display">RSVP</h2>
+      </div>
+
+      <div class="rsvp-box fade-up">
+        <form id="royal-rsvp-form" novalidate>
+          <div class="field">
+            <label for="r-name">Guest Full Name *</label>
+            <input type="text" id="r-name" placeholder="e.g. Tariq Mahmood" required />
+          </div>
+
+          <div class="field">
+            <label for="r-status">Response *</label>
+            <select id="r-status">
+              <option value="accept">Delighted to Attend</option>
+              <option value="decline">Regretfully Unable to Attend</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="r-seats">Number of Seats Reserved</label>
+            <select id="r-seats">
+              <option value="1">1 Person</option>
+              <option value="2" selected>2 People</option>
+              <option value="3">3 People</option>
+              <option value="4">4 People</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="r-wish">A Note for the Couple</label>
+            <textarea id="r-wish" rows="3" placeholder="Share your prayers and wishes..."></textarea>
+          </div>
+
+          <button type="submit" class="submit-gold">Confirm Attendance</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast-msg" id="toast-msg"></div>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <footer>
+    <h4>ZAYD &amp; ELINA</h4>
+    <p>January 22, 2027 &bull; Forever Begins</p>
+  </footer>
+
+  <!-- ========================================================================
+       JAVASCRIPT: CURTAIN DOORS, GOLDEN STARDUST, COUNTDOWN & INTERACTIONS
+       ======================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      /* 1. Split-Door Curtain Opening */
+      const curtain = document.getElementById('curtain-overlay');
+      const openBtn = document.getElementById('open-curtain-btn');
+      const replayBtn = document.getElementById('replay-curtain-btn');
+      const heroText = document.getElementById('hero-text');
+      const heroArch = document.getElementById('hero-arch');
+
+      function openRoyalDoors() {
+        curtain.classList.add('open');
+        document.body.classList.remove('locked');
+        heroText.classList.add('revealed');
+        heroArch.classList.add('revealed');
+
+        setTimeout(() => {
+          curtain.classList.add('is-hidden');
+        }, 1400);
+      }
+
+      function resetRoyalDoors() {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        curtain.classList.remove('is-hidden');
+        document.body.classList.add('locked');
+        heroText.classList.remove('revealed');
+        heroArch.classList.remove('revealed');
+
+        requestAnimationFrame(() => {
+          curtain.classList.remove('open');
+        });
+      }
+
+      openBtn.addEventListener('click', openRoyalDoors);
+      replayBtn.addEventListener('click', resetRoyalDoors);
+
+      /* 2. Floating Golden Stardust Canvas */
+      const canvas = document.getElementById('stardust-canvas');
+      const ctx = canvas.getContext('2d');
+      let w = (canvas.width = window.innerWidth);
+      let h = (canvas.height = window.innerHeight);
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      const particles = Array.from({ length: 28 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: 1 + Math.random() * 2.4,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: -0.25 - Math.random() * 0.45,
+        alpha: 0.25 + Math.random() * 0.6,
+        pulse: Math.random() * Math.PI * 2
+      }));
+
+      function drawStardust() {
+        ctx.clearRect(0, 0, w, h);
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.pulse += 0.03;
+
+          if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
+          if (p.x < -10) p.x = w + 10;
+          if (p.x > w + 10) p.x = -10;
+
+          const currentAlpha = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(212, 175, 55, ${currentAlpha})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(drawStardust);
+      }
+      drawStardust();
+
+      /* 3. Top Progress Bar & Navbar State */
+      const progressBar = document.getElementById('scroll-progress');
+      const headerNav = document.getElementById('header-nav');
+
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = `${pct}%`;
+        headerNav.classList.toggle('solid', scrollTop > 50);
+      }, { passive: true });
+
+      /* 4. Live Countdown Timer (Customize Date Here) */
+      const targetDate = new Date('January 22, 2027 16:30:00').getTime();
+
+      function tick() {
+        const gap = Math.max(0, targetDate - Date.now());
+        document.getElementById('d-val').textContent = String(Math.floor(gap / 86400000)).padStart(2, '0');
+        document.getElementById('h-val').textContent = String(Math.floor((gap / 3600000) % 24)).padStart(2, '0');
+        document.getElementById('m-val').textContent = String(Math.floor((gap / 60000) % 60)).padStart(2, '0');
+        document.getElementById('s-val').textContent = String(Math.floor((gap / 1000) % 60)).padStart(2, '0');
+      }
+      tick();
+      setInterval(tick, 1000);
+
+      /* 5. Scroll Reveal Observer */
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.fade-up').forEach((el) => io.observe(el));
+
+      /* 6. Lightbox Preview */
+      const modal = document.getElementById('modal-view');
+      const modalImg = document.getElementById('modal-img');
+
+      document.querySelectorAll('.photo-tile').forEach((tile) => {
+        tile.addEventListener('click', () => {
+          modalImg.src = tile.dataset.src;
+          modal.classList.add('active');
+        });
+      });
+
+      document.getElementById('close-modal').addEventListener('click', () => modal.classList.remove('active'));
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+
+      /* 7. RSVP Submission */
+      const form = document.getElementById('royal-rsvp-form');
+      const toast = document.getElementById('toast-msg');
+
+      function notify(text) {
+        toast.textContent = text;
+        toast.classList.add('visible');
+        setTimeout(() => toast.classList.remove('visible'), 4200);
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('r-name').value.trim();
+        if (!name) {
+          notify('Please enter your full name.');
+          return;
+        }
+        const status = document.getElementById('r-status').value;
+        const seats = document.getElementById('r-seats').value;
+
+        notify(
+          status === 'accept'
+            ? `Honored to have you, ${name}! (${seats} seat(s) reserved).`
+            : `Thank you for your warm wishes, ${name}.`
+        );
+        form.reset();
+      });
+    });
+  </script>
+</body>
+</html>
